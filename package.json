@@ -1,0 +1,13 @@
+{
+  "name": "yiruda-studio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "preview": "firebase hosting:channel:deploy preview --expires 7d",
+    "serve": "firebase emulators:start --only hosting",
+    "deploy": "firebase deploy --only hosting"
+  },
+  "devDependencies": {
+    "firebase-tools": "^15.19.0"
+  }
+}
