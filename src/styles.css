@@ -351,6 +351,11 @@ fieldset {
   color: #25312b;
 }
 
+.form-error {
+  color: #a24d35;
+  font-weight: 800;
+}
+
 .upload-box {
   min-height: 220px;
   place-items: center;

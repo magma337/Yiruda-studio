@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { HeaderBlock } from "../blocks/shared/HeaderBlock";
 import { CreateHeaderBlock } from "../blocks/create/CreateHeaderBlock";
 import { GenerateButtonBlock } from "../blocks/create/GenerateButtonBlock";
@@ -12,7 +12,7 @@ import { GeneratedContent, Mood, Page, ProductInput } from "../types";
 type CreatePageProps = {
   latest?: GeneratedContent;
   setPage: (page: Page) => void;
-  onGenerate: (input: ProductInput) => void;
+  onGenerate: (input: ProductInput) => GeneratedContent;
 };
 
 export function CreatePage({ latest, setPage, onGenerate }: CreatePageProps) {
@@ -21,6 +21,8 @@ export function CreatePage({ latest, setPage, onGenerate }: CreatePageProps) {
   const [mood, setMood] = useState<Mood>("따뜻한");
   const [imageName, setImageName] = useState("");
   const [imageUrl, setImageUrl] = useState<string>();
+  const [preview, setPreview] = useState<GeneratedContent | undefined>(latest);
+  const [errorMessage, setErrorMessage] = useState("");
 
   function handleImageChange(file?: File) {
     setImageName(file?.name ?? "");
@@ -33,9 +35,15 @@ export function CreatePage({ latest, setPage, onGenerate }: CreatePageProps) {
     reader.readAsDataURL(file);
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    onGenerate({ productName, description, mood, imageName, imageUrl });
+  function handleGenerateClick() {
+    if (!productName.trim() || !description.trim()) {
+      setErrorMessage("상품명과 설명을 입력해주세요.");
+      return;
+    }
+
+    setErrorMessage("");
+    const generated = onGenerate({ productName, description, mood, imageName, imageUrl });
+    setPreview(generated);
   }
 
   return (
@@ -44,7 +52,7 @@ export function CreatePage({ latest, setPage, onGenerate }: CreatePageProps) {
       <main>
         <CreateHeaderBlock setPage={setPage} />
         <section className="section create-grid">
-          <form className="writer-form" onSubmit={handleSubmit}>
+          <form className="writer-form">
             <ImageUploadBlock imageName={imageName} imageUrl={imageUrl} onImageChange={handleImageChange} />
             <ProductInfoBlock
               productName={productName}
@@ -53,9 +61,10 @@ export function CreatePage({ latest, setPage, onGenerate }: CreatePageProps) {
               setDescription={setDescription}
             />
             <ToneSelectBlock mood={mood} setMood={setMood} />
-            <GenerateButtonBlock disabled={!productName.trim() || !description.trim()} />
+            <GenerateButtonBlock onGenerate={handleGenerateClick} />
+            {errorMessage && <p className="form-error">{errorMessage}</p>}
           </form>
-          <ResultPreviewBlock latest={latest} setPage={setPage} />
+          <ResultPreviewBlock latest={preview} setPage={setPage} />
         </section>
       </main>
       <FooterBlock />

@@ -17,10 +17,26 @@ export function ResultPreviewBlock({ latest, setPage }: ResultPreviewBlockProps)
 
   return (
     <aside className="result-preview">
-      <h2>최근 생성 결과</h2>
+      <h2>생성 결과 미리보기</h2>
       <article className="result-card">
-        <h3>{latest.productName}</h3>
+        <h3>네이버 블로그 글 초안</h3>
         <p>{latest.blogDraft}</p>
+      </article>
+      <article className="result-card">
+        <h3>상품 판매 문구</h3>
+        <p>{latest.salesCopy}</p>
+      </article>
+      <article className="result-card">
+        <h3>활용 예시</h3>
+        <p>{latest.usageExamples}</p>
+      </article>
+      <article className="result-card">
+        <h3>SEO 키워드</h3>
+        <p>{latest.seoKeywords}</p>
+      </article>
+      <article className="result-card">
+        <h3>인스타 문구</h3>
+        <p>{latest.instagramCopy}</p>
       </article>
       <button className="secondary-button" onClick={() => setPage("result")}>상세 결과 보기</button>
     </aside>

@@ -29,7 +29,7 @@ export function App() {
     const next = saveContent(content);
     setContents(next);
     setSelectedId(content.id);
-    setPage("result");
+    return content;
   }
 
   function openResult(id: string) {
